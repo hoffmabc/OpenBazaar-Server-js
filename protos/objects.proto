@@ -1,0 +1,181 @@
+/*
+Get the protobuf compiler:
+You will need to manually compile protobuf v3.0.0-beta-2
+https://github.com/google/protobuf/releases/tag/v3.0.0-beta-2
+
+Compile with:
+cd path/to/protos/
+protoc --python_out=./ objects.proto
+*/
+
+syntax = "proto3";
+import "countries.proto";
+
+//An object containing information about the node.
+//Some fields are optional as they aren't needed in all situations.
+message Node {
+    bytes guid             = 1;
+    bytes publicKey        = 2;
+    NATType natType        = 3;
+    IPAddress nodeAddress  = 4;
+    IPAddress relayAddress = 5;
+    bool vendor            = 6;
+
+    message IPAddress {
+        string ip    = 1;
+        uint32 port  = 2;
+    }
+}
+
+enum NATType {
+    FULL_CONE  = 0;
+    RESTRICTED = 1;
+    SYMMETRIC  = 2;
+}
+
+
+//The value returned by a FIND_VALUE rpc call
+//Typically a list of these will be returned for any given keyword.
+message Value {
+    bytes keyword        = 1;
+    bytes valueKey       = 2;
+    bytes serializedData = 3;
+    uint32 ttl           = 4;
+}
+
+//A list of these is sent in an INV packet
+message Inv {
+    bytes keyword  = 1;
+    bytes valueKey = 2;
+}
+
+//The object returned by the GET_PROFILE rpc call
+message Profile {
+    string name                   = 1;
+    CountryCode location          = 2;
+    PublicKey guid_key            = 3;
+    PublicKey bitcoin_key         = 4; // guid signature covers bitcoin key
+    bool nsfw                     = 5;
+    bool vendor                   = 6;
+    bool moderator                = 7;
+    float moderation_fee          = 8;
+    string handle                 = 9;
+    string about                  = 10;
+    string short_description      = 11;
+    string website                = 12;
+    string email                  = 13;
+    repeated SocialAccount social = 14;
+    uint32 primary_color          = 15;
+    uint32 secondary_color        = 16;
+    uint32 background_color       = 17;
+    uint32 text_color             = 18;
+    uint32 follower_count         = 19;
+    uint32 following_count        = 20;
+    PublicKey pgp_key             = 21; // pgp signature covers guid
+    bytes avatar_hash             = 22;
+    bytes header_hash             = 23;
+    uint64 last_modified          = 24;
+
+    // Social media account for the profile
+    message SocialAccount {
+        SocialType type  = 1;
+        string username  = 2;
+        string proof_url = 3;
+
+        enum SocialType {
+            FACEBOOK  = 0;
+            TWITTER   = 1;
+            INSTAGRAM = 2;
+            SNAPCHAT  = 3;
+        }
+    }
+
+    message PublicKey {
+        bytes public_key = 1;
+        bytes signature  = 2;
+    }
+}
+
+message Metadata {
+    string name              = 1;
+    string handle            = 2;
+    string short_description = 3;
+    bytes avatar_hash        = 4;
+    bool nsfw                = 5;
+}
+
+message Listings {
+    repeated ListingMetadata listing = 1;
+    string handle                    = 2;
+    bytes avatar_hash                = 3;
+
+    message ListingMetadata {
+        bytes contract_hash           = 1;
+        string title                  = 2;
+        bytes thumbnail_hash          = 3;
+        string category               = 4;
+        float price                   = 5;
+        string currency_code          = 6;
+        bool nsfw                     = 7;
+        CountryCode origin            = 8;
+        repeated CountryCode ships_to = 9;
+        bytes avatar_hash             = 10;
+        string handle                 = 11;
+        ContractType contract_type    = 12;
+        uint64 last_modified          = 13;
+        bool pinned                   = 14;
+        bool hidden                   = 15;
+    }
+
+    enum ContractType {
+        NOT_SET       = 0;
+        PHYSICAL_GOOD = 1;
+        DIGITAL_GOOD  = 2;
+        SERVICE       = 3;
+    }
+}
+
+message Followers {
+    repeated Follower followers = 1;
+
+    message Follower {
+        bytes guid          = 1;
+        bytes following     = 2;
+        bytes pubkey        = 3;
+        Metadata metadata   = 4;
+        bytes signature     = 5;
+    }
+}
+
+message Following {
+    repeated User users = 1;
+
+    message User {
+        bytes guid          = 1;
+        bytes pubkey        = 2;
+        Metadata metadata   = 3;
+        bytes signature     = 4;
+    }
+}
+
+message PlaintextMessage {
+    bytes sender_guid                = 1;
+    string handle                    = 2;
+    bytes pubkey                     = 3;
+    string subject                   = 4;
+    Type type                        = 5;
+    string message                   = 6;
+    uint64 timestamp                 = 7;
+    bytes avatar_hash                = 8;
+    bytes signature                  = 9;
+
+    enum Type {
+        CHAT                 = 0;
+        ORDER                = 1;
+        DISPUTE_OPEN         = 2;
+        DISPUTE_CLOSE        = 3;
+        ORDER_CONFIRMATION   = 4;
+        RECEIPT              = 5;
+        REFUND               = 6;
+    }
+}

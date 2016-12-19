@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+message Packet {
+    bool syn = 1;
+    bool fin = 2;
+
+    uint64 sequence_number = 3;
+    uint64 more_fragments = 4;
+    uint64 ack = 5;
+
+    bytes payload = 6;
+
+    string dest_ip = 7;
+    uint32 dest_port = 8;
+
+    string source_ip = 9;
+    uint32 source_port = 10;
+}

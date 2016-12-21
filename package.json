@@ -25,9 +25,11 @@
     "mkdirp": "^0.5.1",
     "ordered-dict": "0.0.1",
     "pbjs": "0.0.3",
+    "protobufjs": "^6.2.1",
     "sqlite3": "^3.1.8",
     "sqlite3-transactions": "0.0.5",
-    "tweetnacl": "^0.14.5"
+    "tweetnacl": "^0.14.5",
+    "vs-stun": "0.0.7"
   },
   "devDependencies": {
     "pbjs": "0.0.3"

@@ -1,3 +1,4 @@
+
 (function(global, factory) {
     /* eslint-disable no-undef */
 
@@ -10,7 +11,7 @@
     /* eslint-enable no-undef */
 })(this, function($protobuf) {
     "use strict"; // eslint-disable-line strict
-
+    var protobuf = require('protobufjs');
     var $root = protobuf.Root.fromJSON({
           "nested": {
             "Contract": {

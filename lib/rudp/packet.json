@@ -1,0 +1,48 @@
+{
+  "nested": {
+    "Packet": {
+      "fields": {
+        "syn": {
+          "type": "bool",
+          "id": 1
+        },
+        "fin": {
+          "type": "bool",
+          "id": 2
+        },
+        "sequenceNumber": {
+          "type": "uint64",
+          "id": 3
+        },
+        "moreFragments": {
+          "type": "uint64",
+          "id": 4
+        },
+        "ack": {
+          "type": "uint64",
+          "id": 5
+        },
+        "payload": {
+          "type": "bytes",
+          "id": 6
+        },
+        "destIp": {
+          "type": "string",
+          "id": 7
+        },
+        "destPort": {
+          "type": "uint32",
+          "id": 8
+        },
+        "sourceIp": {
+          "type": "string",
+          "id": 9
+        },
+        "sourcePort": {
+          "type": "uint32",
+          "id": 10
+        }
+      }
+    }
+  }
+}
